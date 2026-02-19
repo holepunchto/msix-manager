@@ -9,6 +9,8 @@ npm i msix-manager
 ## Usage
 
 ```js
+const MSIXManager = require('msix-manager')
+
 const manager = new MSIXManager()
 
 manager
