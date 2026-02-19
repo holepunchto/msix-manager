@@ -26,6 +26,12 @@ target_precompile_headers(
     lib/windows-sdk.h
 )
 
+target_link_libraries(
+  ${msix_manager_bare}
+  PUBLIC
+    WindowsApp
+)
+
 add_napi_module(msix_manager_node)
 
 target_sources(
@@ -50,6 +56,12 @@ target_precompile_headers(
   ${msix_manager_node}
   PRIVATE
     lib/windows-sdk.h
+)
+
+target_link_libraries(
+  ${msix_manager_node}
+  PUBLIC
+    WindowsApp
 )
 
 resolve_node_module(bare-compat-napi compat)
