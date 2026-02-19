@@ -1,0 +1,52 @@
+{
+  "name": "msix-manager",
+  "version": "0.1.0",
+  "description": "Install and update MSIX packages from JavaScript",
+  "exports": {
+    "./package": "./package.json",
+    ".": "./index.js",
+    "./runtime": "./runtime.js"
+  },
+  "imports": {
+    "events": {
+      "bare": "bare-events",
+      "default": "events"
+    },
+    "url": {
+      "bare": "bare-url",
+      "default": "url"
+    }
+  },
+  "files": [
+    "index.js",
+    "binding.cc",
+    "binding.js",
+    "CMakeLists.txt",
+    "lib",
+    "prebuilds"
+  ],
+  "addon": true,
+  "scripts": {
+    "test": "prettier . --check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/holepunchto/msix-manager.git"
+  },
+  "author": "Holepunch",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/holepunchto/msix-manager/issues"
+  },
+  "homepage": "https://github.com/holepunchto/msix-manager#readme",
+  "dependencies": {
+    "bare-events": "^2.8.2",
+    "bare-url": "^2.3.2"
+  },
+  "devDependencies": {
+    "brittle": "^3.18.0",
+    "cmake-bare": "^1.6.5",
+    "prettier": "^3.4.1",
+    "prettier-config-holepunch": "^2.0.0"
+  }
+}
