@@ -4,8 +4,7 @@
   "description": "Install and update MSIX packages from JavaScript",
   "exports": {
     "./package": "./package.json",
-    ".": "./index.js",
-    "./runtime": "./runtime.js"
+    ".": "./index.js"
   },
   "imports": {
     "events": {
@@ -27,7 +26,11 @@
   ],
   "addon": true,
   "scripts": {
-    "test": "prettier . --check"
+    "format": "prettier --write .",
+    "lint": "prettier --check . && lunte",
+    "test": "npm run test:node && npm run test:bare",
+    "test:bare": "brittle-bare --coverage test.js",
+    "test:node": "brittle-node --coverage test.js"
   },
   "repository": {
     "type": "git",
@@ -50,6 +53,7 @@
     "cmake-bare": "^1.6.5",
     "cmake-napi": "^1.2.2",
     "cmake-npm": "^1.1.0",
+    "lunte": "^1.6.0",
     "prettier": "^3.4.1",
     "prettier-config-holepunch": "^2.0.0"
   }

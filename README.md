@@ -11,7 +11,8 @@ npm i msix-manager
 ```js
 const manager = new MSIXManager()
 
-manager.addPackage('./App.msix')
+manager
+  .addPackage('./App.msix')
   .on('progress', (progress) => {
     console.log('Progress', progress)
   })

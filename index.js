@@ -20,7 +20,13 @@ class MSIXManagerAddPackage extends EventEmitter {
 
     this._completed = Promise.withResolvers()
 
-    this._handle = binding.addPackage(manager._handle, uri, this, this._onprogress, this._oncompleted)
+    this._handle = binding.addPackage(
+      manager._handle,
+      uri,
+      this,
+      this._onprogress,
+      this._oncompleted
+    )
   }
 
   then(resolve, reject) {
