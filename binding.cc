@@ -155,6 +155,8 @@ msix_manager_add_package(js_env_t *env, js_callback_info_t *info) {
   err = js_get_value_string_utf16le(env, argv[1], nullptr, 0, &len);
   assert(err == 0);
 
+  len += 1 /* NULL */;
+
   std::vector<wchar_t> uri(len);
   err = js_get_value_string_utf16le(env, argv[1], reinterpret_cast<utf16_t *>(uri.data()), len, nullptr);
   assert(err == 0);
