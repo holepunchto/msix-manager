@@ -1,6 +1,6 @@
 const EventEmitter = require('events')
 const { pathToFileURL } = require('url')
-const binding = require('./binding')
+const binding = require('#binding')
 
 module.exports = class MSIXManager {
   constructor() {

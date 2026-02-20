@@ -4,9 +4,19 @@
   "description": "Install and update MSIX packages from JavaScript",
   "exports": {
     "./package": "./package.json",
-    ".": "./index.js"
+    ".": {
+      "bare": {
+        "win32": "./index.js",
+        "default": "./unsupported.js"
+      },
+      "default": "./index.js"
+    }
   },
   "imports": {
+    "#binding": {
+      "bare": "./lib/binding/bare.js",
+      "node": "./lib/binding/node.js"
+    },
     "events": {
       "bare": "bare-events",
       "default": "events"
@@ -18,8 +28,8 @@
   },
   "files": [
     "index.js",
+    "unsupported.js",
     "binding.cc",
-    "binding.js",
     "CMakeLists.txt",
     "lib",
     "prebuilds"
