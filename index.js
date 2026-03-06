@@ -7,13 +7,15 @@ module.exports = class MSIXManager {
     this._handle = binding.init()
   }
 
-  addPackage(file) {
-    return new MSIXManagerAddPackage(this, pathToFileURL(file).href)
+  addPackage(file, opts = {}) {
+    return new MSIXManagerAddPackage(this, pathToFileURL(file).href, opts)
   }
 }
 
 class MSIXManagerAddPackage extends EventEmitter {
-  constructor(manager, uri) {
+  constructor(manager, uri, opts) {
+    const { restartOnUpdate = false } = opts
+
     super()
 
     this._manager = manager
@@ -23,6 +25,7 @@ class MSIXManagerAddPackage extends EventEmitter {
     this._handle = binding.addPackage(
       manager._handle,
       uri,
+      restartOnUpdate,
       this,
       this._onprogress,
       this._oncompleted
