@@ -139,13 +139,13 @@ static js_value_t *
 msix_manager_add_package(js_env_t *env, js_callback_info_t *info) {
   int err;
 
-  size_t argc = 6;
-  js_value_t *argv[6];
+  size_t argc = 5;
+  js_value_t *argv[5];
 
   err = js_get_callback_info(env, info, &argc, argv, nullptr, nullptr);
   assert(err == 0);
 
-  assert(argc == 6);
+  assert(argc == 5);
 
   msix_manager_t *manager;
   err = js_get_value_external(env, argv[0], (void **) &manager);
@@ -161,33 +161,24 @@ msix_manager_add_package(js_env_t *env, js_callback_info_t *info) {
   err = js_get_value_string_utf16le(env, argv[1], reinterpret_cast<utf16_t *>(uri.data()), len, nullptr);
   assert(err == 0);
 
-  bool restart_on_update;
-  err = js_get_value_bool(env, argv[2], &restart_on_update);
-  assert(err == 0);
-
   auto req = new msix_manager_add_package_t();
 
-  err = js_create_reference(env, argv[3], 1, &req->ctx);
+  err = js_create_reference(env, argv[2], 1, &req->ctx);
   assert(err == 0);
 
-  err = js_create_threadsafe_function(env, argv[4], 0, 1, nullptr, nullptr, req, msix_manager_add_package__on_progress, &req->on_progress);
+  err = js_create_threadsafe_function(env, argv[3], 0, 1, nullptr, nullptr, req, msix_manager_add_package__on_progress, &req->on_progress);
   assert(err == 0);
 
-  err = js_create_threadsafe_function(env, argv[5], 0, 1, nullptr, nullptr, req, msix_manager_add_package__on_completed, &req->on_completed);
+  err = js_create_threadsafe_function(env, argv[4], 0, 1, nullptr, nullptr, req, msix_manager_add_package__on_completed, &req->on_completed);
   assert(err == 0);
 
   js_value_t *result;
   err = js_create_external(env, req, nullptr, nullptr, &result);
   assert(err == 0);
 
-  if (restart_on_update) {
-    err = RegisterApplicationRestart(nullptr, RESTART_NO_CRASH | RESTART_NO_HANG | RESTART_NO_REBOOT);
-    assert(err == 0);
-  }
-
   AddPackageOptions options;
 
-  options.ForceAppShutdown(true);
+  options.DeferRegistrationWhenPackagesAreInUse(true);
 
   req->handle = manager->handle.AddPackageByUriAsync(Uri(hstring(uri.data(), len)), options);
 

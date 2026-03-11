@@ -13,9 +13,7 @@ module.exports = class MSIXManager {
 }
 
 class MSIXManagerAddPackage extends EventEmitter {
-  constructor(manager, uri, opts) {
-    const { restartOnUpdate = false } = opts
-
+  constructor(manager, uri) {
     super()
 
     this._manager = manager
@@ -25,7 +23,6 @@ class MSIXManagerAddPackage extends EventEmitter {
     this._handle = binding.addPackage(
       manager._handle,
       uri,
-      restartOnUpdate,
       this,
       this._onprogress,
       this._oncompleted
