@@ -7,15 +7,41 @@ module.exports = class MSIXManager {
     this._handle = binding.init()
   }
 
-  addPackage(file) {
-    return new MSIXManagerAddPackage(this, pathToFileURL(file).href)
+  addPackage(file, opts = {}) {
+    return new MSIXManagerAddPackage(this, pathToFileURL(file).href, opts)
   }
 }
 
-class MSIXManagerAddPackage {
+class MSIXManagerAddPackage extends EventEmitter {
   constructor(manager, uri) {
+    super()
+
     this._manager = manager
 
-    this._handle = binding.addPackage(manager._handle, uri, this)
+    this._completed = Promise.withResolvers()
+
+    this._handle = binding.addPackage(
+      manager._handle,
+      uri,
+      this,
+      this._onprogress,
+      this._oncompleted
+    )
+  }
+
+  then(resolve, reject) {
+    return this._completed.promise.then(resolve, reject)
+  }
+
+  _onprogress(progress) {
+    this.emit('progress', progress)
+  }
+
+  _oncompleted(err) {
+    if (err) {
+      this._completed.reject(new Error(err))
+    } else {
+      this._completed.resolve()
+    }
   }
 }
