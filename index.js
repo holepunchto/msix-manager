@@ -13,7 +13,9 @@ module.exports = class MSIXManager {
 }
 
 class MSIXManagerAddPackage extends EventEmitter {
-  constructor(manager, uri) {
+  constructor(manager, uri, opts) {
+    const { allowUnsigned = false } = opts
+
     super()
 
     this._manager = manager
@@ -23,6 +25,7 @@ class MSIXManagerAddPackage extends EventEmitter {
     this._handle = binding.addPackage(
       manager._handle,
       uri,
+      allowUnsigned,
       this,
       this._onprogress,
       this._oncompleted
