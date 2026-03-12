@@ -156,9 +156,11 @@ msix_manager_add_package__on_status(js_env_t *env, js_value_t *, void *context, 
 
   switch (status->type) {
   case msix_manager_add_package_status_t ::progress:
-    return msix_manager_add_package__on_progress(env, req, status);
+    msix_manager_add_package__on_progress(env, req, status);
+    break;
   case msix_manager_add_package_status_t ::completed:
-    return msix_manager_add_package__on_completed(env, req, status);
+    msix_manager_add_package__on_completed(env, req, status);
+    break;
   }
 
   delete status;
