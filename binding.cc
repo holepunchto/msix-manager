@@ -30,9 +30,9 @@ struct msix_manager_add_package_status_t {
     DeploymentProgress progress;
   } data;
 
-  msix_manager_add_package_status_t(DeploymentProgress progress) : type(msix_manager_add_package_status_t::progress), data(progress) {}
+  msix_manager_add_package_status_t(DeploymentProgress progress) : type(msix_manager_add_package_status_t::progress), data({progress}) {}
 
-  msix_manager_add_package_status_t() : type(msix_manager_add_package_status_t::completed) {}
+  msix_manager_add_package_status_t() : type(msix_manager_add_package_status_t::completed), data({}) {}
 };
 
 static void
