@@ -6,8 +6,11 @@
     "./package": "./package.json",
     ".": {
       "bare": {
-        "win32": "./index.js",
-        "default": "./unsupported.js"
+        "darwin": "./unsupported.js"
+        "ios": "./unsupported.js"
+        "linux": "./unsupported.js"
+        "android": "./unsupported.js"
+        "default": "./index.js"
       },
       "default": "./index.js"
     }
