@@ -6,10 +6,10 @@
     "./package": "./package.json",
     ".": {
       "bare": {
-        "darwin": "./unsupported.js"
-        "ios": "./unsupported.js"
-        "linux": "./unsupported.js"
-        "android": "./unsupported.js"
+        "darwin": "./unsupported.js",
+        "ios": "./unsupported.js",
+        "linux": "./unsupported.js",
+        "android": "./unsupported.js",
         "default": "./index.js"
       },
       "default": "./index.js"
