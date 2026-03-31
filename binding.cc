@@ -170,13 +170,13 @@ static js_value_t *
 msix_manager_add_package(js_env_t *env, js_callback_info_t *info) {
   int err;
 
-  size_t argc = 6;
-  js_value_t *argv[6];
+  size_t argc = 7;
+  js_value_t *argv[7];
 
   err = js_get_callback_info(env, info, &argc, argv, nullptr, nullptr);
   assert(err == 0);
 
-  assert(argc == 6);
+  assert(argc == 7);
 
   msix_manager_t *manager;
   err = js_get_value_external(env, argv[0], (void **) &manager);
@@ -196,15 +196,19 @@ msix_manager_add_package(js_env_t *env, js_callback_info_t *info) {
   err = js_get_value_bool(env, argv[2], &allow_unsigned);
   assert(err == 0);
 
+  bool force_update_from_any_version;
+  err = js_get_value_bool(env, argv[3], &force_update_from_any_version);
+  assert(err == 0);
+
   auto req = new msix_manager_add_package_t();
 
-  err = js_create_reference(env, argv[3], 1, &req->ctx);
+  err = js_create_reference(env, argv[4], 1, &req->ctx);
   assert(err == 0);
 
-  err = js_create_reference(env, argv[4], 1, &req->on_progress);
+  err = js_create_reference(env, argv[5], 1, &req->on_progress);
   assert(err == 0);
 
-  err = js_create_reference(env, argv[5], 1, &req->on_completed);
+  err = js_create_reference(env, argv[6], 1, &req->on_completed);
   assert(err == 0);
 
   err = js_create_threadsafe_function(env, nullptr, 0, 1, nullptr, nullptr, req, msix_manager_add_package__on_status, &req->on_status);
@@ -218,6 +222,7 @@ msix_manager_add_package(js_env_t *env, js_callback_info_t *info) {
 
   options.DeferRegistrationWhenPackagesAreInUse(true);
   options.AllowUnsigned(allow_unsigned);
+  options.ForceUpdateFromAnyVersion(force_update_from_any_version);
 
   req->handle = manager->handle.AddPackageByUriAsync(Uri(hstring(uri.data(), len)), options);
 
