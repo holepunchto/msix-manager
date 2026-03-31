@@ -14,7 +14,7 @@ module.exports = class MSIXManager {
 
 class MSIXManagerAddPackage extends EventEmitter {
   constructor(manager, uri, opts) {
-    const { allowUnsigned = false, forceUpdateFromAnyVersion = true } = opts
+    const { allowUnsigned = false, forceUpdateFromAnyVersion = false } = opts
 
     super()
 
