@@ -1,6 +1,6 @@
 {
   "name": "msix-manager",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Install and update MSIX packages from JavaScript",
   "exports": {
     "./package": "./package.json",
