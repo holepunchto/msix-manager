@@ -224,7 +224,7 @@ msix_manager_add_package(js_env_t *env, js_callback_info_t *info) {
   options.AllowUnsigned(allow_unsigned);
   options.ForceUpdateFromAnyVersion(force_update_from_any_version);
 
-  req->handle = manager->handle.AddPackageByUriAsync(Uri(hstring(uri.data(), len)), options);
+  req->handle = manager->handle.AddPackageByUriAsync(Uri(hstring(uri.data(), len - 1)), options);
 
   req->handle.Progress([=](auto &, auto &progress) {
     int err;
