@@ -154,6 +154,12 @@ msix_manager_add_package__on_status(js_env_t *env, js_value_t *, void *context, 
 
   auto status = reinterpret_cast<msix_manager_add_package_status_t *>(data);
 
+  if (env == nullptr) {
+    delete status;
+
+    return;
+  }
+
   switch (status->type) {
   case msix_manager_add_package_status_t ::progress:
     msix_manager_add_package__on_progress(env, req, status);
@@ -164,6 +170,30 @@ msix_manager_add_package__on_status(js_env_t *env, js_value_t *, void *context, 
   }
 
   delete status;
+}
+
+static void
+msix_manager_add_package__send_status(msix_manager_add_package_t *req, msix_manager_add_package_status_t *status) {
+  int err;
+
+  err = js_acquire_threadsafe_function(req->on_status);
+
+  if (err < 0) {
+    delete status;
+
+    return;
+  }
+
+  err = js_call_threadsafe_function(req->on_status, status, js_threadsafe_function_blocking);
+
+  if (err < 0) {
+    delete status;
+
+    return;
+  }
+
+  err = js_release_threadsafe_function(req->on_status, js_threadsafe_function_release);
+  assert(err == 0);
 }
 
 static js_value_t *
@@ -227,15 +257,11 @@ msix_manager_add_package(js_env_t *env, js_callback_info_t *info) {
   req->handle = manager->handle.AddPackageByUriAsync(Uri(hstring(uri.data(), len - 1)), options);
 
   req->handle.Progress([=](auto &, auto &progress) {
-    int err;
-    err = js_call_threadsafe_function(req->on_status, new msix_manager_add_package_status_t(progress), js_threadsafe_function_blocking);
-    assert(err == 0);
+    msix_manager_add_package__send_status(req, new msix_manager_add_package_status_t(progress));
   });
 
   req->handle.Completed([=](auto &, auto &) {
-    int err;
-    err = js_call_threadsafe_function(req->on_status, new msix_manager_add_package_status_t(), js_threadsafe_function_blocking);
-    assert(err == 0);
+    msix_manager_add_package__send_status(req, new msix_manager_add_package_status_t());
   });
 
   return result;
